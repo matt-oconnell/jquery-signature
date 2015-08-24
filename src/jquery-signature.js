@@ -24,6 +24,7 @@ var a=function(a){"use strict";var b=function(a,b){var c=this,d=b||{};this.veloc
 		}, options);
 
 		var canvas = this[0];
+		var signaturePad = new SignaturePad(canvas);
 
 		if(settings.responsiveWidth) {
 			canvas.width = $(window).width();
@@ -32,9 +33,8 @@ var a=function(a){"use strict";var b=function(a,b){var c=this,d=b||{};this.veloc
 			});
 		}
 
-		var signaturePad = new SignaturePad(canvas);
-
-		var saveButton = settings.saveButton;
+		var saveButton = settings.saveButton,
+			lsKey = 'exp-signature' + window.location.href;
 		if(saveButton) {
 			saveButton.click(function() {
 				if(signaturePad.isEmpty()) {
@@ -42,7 +42,7 @@ var a=function(a){"use strict";var b=function(a,b){var c=this,d=b||{};this.veloc
 				} else {
 					var sigURL = signaturePad.toDataURL();
 					if(settings.localStore) {
-						localStorage.setItem('exp-signature', sigURL);
+						localStorage.setItem(lsKey, sigURL);
 					}
 					var sigImage = '<img src="' + sigURL + '" width="100%"/>';
 					settings.resultsHolder.html(sigImage);
@@ -59,11 +59,11 @@ var a=function(a){"use strict";var b=function(a,b){var c=this,d=b||{};this.veloc
 
 		if(settings.localStore) {
 			var img = new Image();
-			img.onload = function() {
-				context.drawImage(img, 0, 0);
-			};
-			img.src = localStorage.getItem('exp-signature');
-			settings.resultsHolder.append(img);
+			img.src = localStorage.getItem(lsKey) || '';
+			if(img.src) {
+				console.log(img.src);
+				settings.resultsHolder.append(img);
+			}
 		}
 
 		return signaturePad;

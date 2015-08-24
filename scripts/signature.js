@@ -19,6 +19,7 @@
 		}, options);
 
 		var canvas = this[0];
+		var signaturePad = new SignaturePad(canvas);
 
 		if(settings.responsiveWidth) {
 			canvas.width = $(window).width();
@@ -27,9 +28,8 @@
 			});
 		}
 
-		var signaturePad = new SignaturePad(canvas);
-
-		var saveButton = settings.saveButton;
+		var saveButton = settings.saveButton,
+			lsKey = 'exp-signature' + window.location.href;
 		if(saveButton) {
 			saveButton.click(function() {
 				if(signaturePad.isEmpty()) {
@@ -37,7 +37,7 @@
 				} else {
 					var sigURL = signaturePad.toDataURL();
 					if(settings.localStore) {
-						localStorage.setItem('exp-signature', sigURL);
+						localStorage.setItem(lsKey, sigURL);
 					}
 					var sigImage = '<img src="' + sigURL + '" width="100%"/>';
 					settings.resultsHolder.html(sigImage);
@@ -54,11 +54,11 @@
 
 		if(settings.localStore) {
 			var img = new Image();
-			img.onload = function() {
-				context.drawImage(img, 0, 0);
-			};
-			img.src = localStorage.getItem('exp-signature');
-			settings.resultsHolder.append(img);
+			img.src = localStorage.getItem(lsKey) || '';
+			if(img.src) {
+				console.log(img.src);
+				settings.resultsHolder.append(img);
+			}
 		}
 
 		return signaturePad;
