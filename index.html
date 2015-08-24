@@ -1,19 +1,43 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>Signature jQuery</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-	</head>
+<head>
+    <title>Signature jQuery</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        .signature {
+            width: 100%;
+        }
+    </style>
+</head>
 
-	<body>
+<body>
 
-        This is a test for the signature plugin.
-
-		<script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
-        <script src="signature-pad.js"></script>
-        <script src="signature.js"></script>
-
+<canvas height="200"></canvas>
+<button class="save">Save</button>
+<button class="clear">Clear</button>
+<div class="signature"></div>
 
 
-	</body>
+<script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+<script src="src/jquery-signature.js"></script>
+
+<script>
+
+    $(document).ready(function() {
+        /**
+         * Signature Example
+         *
+         */
+
+        $('canvas').signature({
+            responsiveWidth: true,
+            saveButton: $('.save'),
+            clearButton: $('.clear'),
+            resultsHolder: $('.signature'),
+            localStore: true
+        });
+    });
+</script>
+
+</body>
 </html>

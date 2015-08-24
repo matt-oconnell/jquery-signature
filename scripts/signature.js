@@ -8,6 +8,7 @@
 		 * @param {Object}  saveButton    (jQuery)
 		 * @param {Object}  clearButton   (jQuery)
 		 * @param {Object}  resultsHolder (jQuery)
+		 * @param {Boolean} localStore
 		 */
 		var settings = $.extend({
 			responsiveWidth: true,
@@ -49,6 +50,15 @@
 			clearButton.click(function() {
 				signaturePad.clear();
 			})
+		}
+
+		if(settings.localStore) {
+			var img = new Image();
+			img.onload = function() {
+				context.drawImage(img, 0, 0);
+			};
+			img.src = localStorage.getItem('exp-signature');
+			settings.resultsHolder.append(img);
 		}
 
 		return signaturePad;

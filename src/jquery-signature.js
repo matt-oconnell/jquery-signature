@@ -13,6 +13,7 @@ var a=function(a){"use strict";var b=function(a,b){var c=this,d=b||{};this.veloc
 		 * @param {Object}  saveButton    (jQuery)
 		 * @param {Object}  clearButton   (jQuery)
 		 * @param {Object}  resultsHolder (jQuery)
+		 * @param {Boolean} localStore
 		 */
 		var settings = $.extend({
 			responsiveWidth: true,
@@ -54,6 +55,15 @@ var a=function(a){"use strict";var b=function(a,b){var c=this,d=b||{};this.veloc
 			clearButton.click(function() {
 				signaturePad.clear();
 			})
+		}
+
+		if(settings.localStore) {
+			var img = new Image();
+			img.onload = function() {
+				context.drawImage(img, 0, 0);
+			};
+			img.src = localStorage.getItem('exp-signature');
+			settings.resultsHolder.append(img);
 		}
 
 		return signaturePad;
